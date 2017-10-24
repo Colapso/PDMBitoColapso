@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">YAMDA</string>
+    <string name="insert_movie_title">Insert Movie Title</string>
+    <string name="search">Search</string>
+    <string name="results_for">Results for:</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="title">Title</string>
+</resources>
