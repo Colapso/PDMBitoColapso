@@ -1,6 +1,7 @@
 package com.example.colapso.helloworld.moviesAPI
 
 import android.support.annotation.RequiresApi
+import android.support.v4.app.ActionBarDrawerToggle
 import com.example.colapso.helloworld.Movie
 import com.example.colapso.helloworld.MovieDetailed
 import java.util.function.Consumer
@@ -17,6 +18,7 @@ abstract class AProvider {
         val POPULAR_MOVIES : String = "https://api.themoviedb.org/3/movie/popular?api_key=%s"
         val KEY : String = "44115219543c4d21e1901c9503b9e6ee"
     }
+
 
     abstract fun getFilmByName(namePart: String) : List<Movie>
     abstract fun getUpComingMovies() : List<Movie>

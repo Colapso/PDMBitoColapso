@@ -10,6 +10,7 @@ import com.example.colapso.helloworld.Movie
 import com.example.colapso.helloworld.MovieDetailed
 import com.example.colapso.helloworld.activitys.ResultsActivity
 import com.example.colapso.helloworld.dto.PopularMoviesDto
+import com.example.colapso.helloworld.dto.UpComingMoviesDTO
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 
@@ -19,7 +20,25 @@ import com.fasterxml.jackson.module.kotlin.readValue
 class Provider(val app: Application) : AProvider() {
 
     override fun getUpComingMovies(): List<Movie> {
-        TODO("not implemented")
+
+        val urlFormatted: String = String.format(UPCOMING_MOVIES, KEY)
+        var movies: List<Movie> = listOf()
+
+        app.requestQueue.add(StringRequest(
+                urlFormatted,
+                {
+                    val jsonStr: String = it.toString();
+                    val mapper = jacksonObjectMapper()
+                    val upComingMoviesDto: UpComingMoviesDTO = mapper.readValue<UpComingMoviesDTO>(jsonStr)
+                    movies = upComingMoviesDto.PopMovDtoToMovie(upComingMoviesDto)
+                    for (mov: Movie in movies)
+                        ResultsActivity.adapter.add(mov.title)
+                },
+                {
+                    Log.e("Error", "Bad Request")
+                }
+        ))
+        return movies
     }
 
     override fun getMovieInfo(movieName: String): MovieDetailed {
@@ -27,11 +46,48 @@ class Provider(val app: Application) : AProvider() {
     }
 
     override fun getNowPlayingMovies(): List<Movie> {
-        TODO("not implemented")
+        val urlFormatted: String = String.format(NOW_PLAYING_MOVIES, KEY)
+
+        var movies: List<Movie> = listOf()
+
+        app.requestQueue.add(StringRequest(
+                urlFormatted,
+                {
+                    val jsonStr: String = it.toString();
+                    val mapper = jacksonObjectMapper()
+                    val popularMoviesDto: PopularMoviesDto = mapper.readValue<PopularMoviesDto>(jsonStr)
+                    movies = popularMoviesDto.PopMovDtoToMovie(popularMoviesDto)
+                    for (mov: Movie in movies)
+                        ResultsActivity.adapter.add(mov.title)
+                },
+                {
+                    Log.e("Error", "Bad Request")
+                }
+        ))
+        return movies
     }
 
     override fun getFilmByName(namePart: String): List<Movie> {
-        TODO("not implemented")
+
+        val urlFormatted: String = String.format(SEARCH_MOVIES, KEY, namePart)
+
+        var movies: List<Movie> = listOf()
+
+        app.requestQueue.add(StringRequest(
+                urlFormatted,
+                {
+                    val jsonStr: String = it.toString();
+                    val mapper = jacksonObjectMapper()
+                    val popularMoviesDto: PopularMoviesDto = mapper.readValue<PopularMoviesDto>(jsonStr)
+                    movies = popularMoviesDto.PopMovDtoToMovie(popularMoviesDto)
+                    for (mov: Movie in movies)
+                        ResultsActivity.adapter.add(mov.title)
+                },
+                {
+                    Log.e("Error", "Bad Request")
+                }
+        ))
+        return movies
     }
 
 
